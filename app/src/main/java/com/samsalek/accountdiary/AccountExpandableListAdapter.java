@@ -2,11 +2,14 @@ package com.samsalek.accountdiary;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -77,17 +80,27 @@ public class AccountExpandableListAdapter implements ExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
         String accountGroupName = String.valueOf(accountGroups[groupPosition]).toUpperCase();
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.group_item, null);
         }
 
+        // TODO - make this work somehow, someday
+        /*
+        if (Objects.requireNonNull(this.accountMap.get(this.accountGroups[groupPosition])).size() == 0) {
+            if(isExpanded) {
+                convertView.setOnClickListener(null);
+                convertView.setBackgroundColor(Color.LTGRAY);
+                Log.d(getClass().getName(), ""+groupPosition);
+            }
+        }
+        */
+
         TextView item = convertView.findViewById(R.id.group_item);
         item.setText(accountGroupName);
         item.setTypeface(null, Typeface.BOLD);
-        item.setTextSize(20);
+        item.setTextSize(35);
 
         return convertView;
     }
