@@ -1,8 +1,10 @@
 package com.samsalek.accountdiary;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -16,15 +18,22 @@ public class MainActivity extends AppCompatActivity {
     private final int numLetters = 29;
     private final char[] swedishAlphabet = new char[numLetters];
     private final Map<Character, List<String>> accountMap = new HashMap<>();
+
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //hideTitleBar();
         setContentView(R.layout.activity_main);
-
         init();
+    }
+
+    // NOT NEEDED ANYMORE - this is now done in the two themes.xml files
+    private void hideTitleBar() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
     }
 
     private void init() {
@@ -32,14 +41,16 @@ public class MainActivity extends AppCompatActivity {
         populateAlphabet();
         initAccountMap();
 
+        accountMap.get(swedishAlphabet[0]).add("Testing");
+
         expandableListView = findViewById(R.id.accountExpandableListView);
         expandableListAdapter = new AccountExpandableListAdapter(this, swedishAlphabet, accountMap);
         expandableListView.setAdapter(expandableListAdapter);
+
         expandableListView.setOnGroupExpandListener(groupPosition -> {
 
         });
 
-        accountMap.get(swedishAlphabet[0]).add("Testing");
     }
 
     private void populateAlphabet() {
