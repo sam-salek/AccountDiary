@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -21,10 +19,9 @@ public class AccountExpandableListAdapter implements ExpandableListAdapter {
 
     private Context context;
     private char[] accountGroups;
-    private Map<Character, List<String>> accountMap;
+    private Map<Character, List<Account>> accountMap;
 
-    public AccountExpandableListAdapter(Context context, char[] swedishAlphabet, Map<Character, List<String>> accountMap) {
-
+    public AccountExpandableListAdapter(Context context, char[] swedishAlphabet, Map<Character, List<Account>> accountMap) {
         this.context = context;
         this.accountGroups = swedishAlphabet;
         this.accountMap = accountMap;
@@ -108,7 +105,7 @@ public class AccountExpandableListAdapter implements ExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         Character accountGroup = accountGroups[groupPosition];
-        String accountName = String.valueOf(Objects.requireNonNull(accountMap.get(accountGroup)).get(childPosition));
+        String accountName = String.valueOf(Objects.requireNonNull(accountMap.get(accountGroup)).get(childPosition).getName());
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.child_item, null);
@@ -122,7 +119,7 @@ public class AccountExpandableListAdapter implements ExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
     @Override
