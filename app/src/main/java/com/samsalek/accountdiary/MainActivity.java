@@ -1,23 +1,19 @@
 package com.samsalek.accountdiary;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int numLetters = 29;
-    private final char[] swedishAlphabet = new char[numLetters];
-    private final Map<Character, List<String>> accountMap = new HashMap<>();
+    private final AccountDiary accountDiary = AccountDiary.get();
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
@@ -25,48 +21,50 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //hideTitleBar();
         setContentView(R.layout.activity_main);
         init();
     }
 
-    // NOT NEEDED ANYMORE - this is now done in the two themes.xml files
-    private void hideTitleBar() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
-    }
-
     private void init() {
-
-        populateAlphabet();
-        initAccountMap();
-
-        accountMap.get(swedishAlphabet[0]).add("Testing");
-
         expandableListView = findViewById(R.id.accountExpandableListView);
-        expandableListAdapter = new AccountExpandableListAdapter(this, swedishAlphabet, accountMap);
+        expandableListAdapter = new AccountExpandableListAdapter(this, accountDiary.getSwedishAlphabet(), accountDiary.getAccountMap());
         expandableListView.setAdapter(expandableListAdapter);
 
-        expandableListView.setOnGroupExpandListener(groupPosition -> {
+        initAddAccountClickListener();
+        initExpandableListChildClickListener();
 
+        accountDiary.addAccount(new Account("A test"));
+        accountDiary.addAccount(new Account("A test 2"));
+        accountDiary.addAccount(new Account("B test"));
+    }
+
+    private void initAddAccountClickListener() {
+        Button addAccountButton = findViewById(R.id.addAccountButton);
+        addAccountButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AccountViewActivity.class);
+            startActivity(intent);
         });
-
     }
 
-    private void populateAlphabet() {
-        int index = 0;
-        for (char alphabet = 'a'; alphabet <= 'z'; alphabet++) {
-            swedishAlphabet[index] = alphabet;
-            index++;
-        }
+    private void initExpandableListChildClickListener() {
+        expandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
 
-        swedishAlphabet[index++] = 'å';
-        swedishAlphabet[index++] = 'ä';
-        swedishAlphabet[index] = 'ö';
-    }
+            // Return if no image stored in account
+            if (accountDiary.getAccount(groupPosition, childPosition).getImageBitmaps().size() == 0) {
+                return false;
+            }
 
-    private void initAccountMap() {
-        for (char c : swedishAlphabet)
-            accountMap.put(c, new ArrayList<>());
+            // Set image
+            ImageView image = findViewById(R.id.imageView);
+            image.setImageBitmap(accountDiary.getAccount(groupPosition, childPosition).getImageBitmaps().get(0));
+
+            // Toggle visibility
+            if (image.getVisibility() == View.VISIBLE)
+                image.setVisibility(View.GONE);
+            else if (image.getVisibility() == View.GONE)
+                image.setVisibility(View.VISIBLE);
+
+            return true;
+        });
     }
 }

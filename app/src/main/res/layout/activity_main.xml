@@ -24,18 +24,21 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:srcCompat="@tools:sample/avatars"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/button_background"
         android:visibility="gone"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/addAccountButton"
         android:layout_width="125dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="15dp"
         android:background="@drawable/button_background"
         android:text="Add Account"
         android:textAllCaps="false"
@@ -50,6 +53,6 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/addAccountButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
