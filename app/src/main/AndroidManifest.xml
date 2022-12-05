@@ -10,10 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AccountDiary">
         <activity
-            android:name=".AccountViewActivity"
+            android:name=".activity.ImageViewActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.AccountViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

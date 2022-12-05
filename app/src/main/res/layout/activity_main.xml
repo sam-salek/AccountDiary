@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <ExpandableListView
         android:id="@+id/accountExpandableListView"
@@ -21,17 +21,6 @@
         app:layout_constraintTop_toBottomOf="@+id/divider">
 
     </ExpandableListView>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/button_background"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addAccountButton"
@@ -54,5 +43,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addAccountButton" />
+
+    <ImageButton
+        android:id="@+id/saveImageButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_background"
+        android:contentDescription="Save data button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/stat_sys_download"
+        app:tint="@color/black"/>
+
+    <ImageButton
+        android:id="@+id/loadImageButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_background"
+        android:contentDescription="Save data button"
+        app:layout_constraintStart_toEndOf="@+id/saveImageButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/stat_sys_upload"
+        app:tint="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
