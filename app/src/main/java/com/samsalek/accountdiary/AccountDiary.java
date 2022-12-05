@@ -1,8 +1,9 @@
 package com.samsalek.accountdiary;
 
-import java.util.ArrayList;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,11 +11,14 @@ public class AccountDiary {
 
     private final int numLetters = 29;
     private final char[] swedishAlphabet = new char[numLetters];
-    private final Map<Character, List<Account>> accountMap = new HashMap<>();
+
+    private final DataStorage dataStorage;
+    private final Map<Character, List<Account>> accountMap;
 
     private AccountDiary() {
         populateAlphabet();
-        initAccountMap();
+        dataStorage = new DataStorage(swedishAlphabet);
+        accountMap = dataStorage.getAccountMap();
     }
 
     private static class SingletonHolder {
@@ -37,9 +41,18 @@ public class AccountDiary {
         swedishAlphabet[index] = 'ö';
     }
 
-    private void initAccountMap() {
-        for (char c : swedishAlphabet)
-            accountMap.put(c, new ArrayList<>());
+    public byte[] dataToBytes() {
+
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(dataStorage);
+            out.flush();
+            return bos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new byte[0];
     }
 
     public char[] getSwedishAlphabet() {
@@ -51,29 +64,34 @@ public class AccountDiary {
     }
 
     public void addAccount(Account account) {
-        char accountGroup = account.getName().toLowerCase().charAt(0);
-        if (!accountMap.containsKey(accountGroup))
-            throw new IllegalArgumentException("No such key in map!");
-
-        accountMap.get(accountGroup).add(account);
+        dataStorage.addAccount(account);
     }
 
     public List<Account> getAccounts(char group) {
-        if (!accountMap.containsKey(group))
-            throw new IllegalArgumentException("No such key in map!");
-
-        return Collections.unmodifiableList(accountMap.get(group));
+        return Collections.unmodifiableList(dataStorage.getAccounts(group));
     }
 
     public List<Account> getAccounts(int groupIndex) {
-        if (groupIndex < 0 || groupIndex >= numLetters) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        return Collections.unmodifiableList(accountMap.get(swedishAlphabet[groupIndex]));
+        return Collections.unmodifiableList(dataStorage.getAccounts(groupIndex));
     }
 
     public Account getAccount(int groupIndex, int childIndex) {
         return getAccounts(groupIndex).get(childIndex);
+    }
+
+    public boolean accountExists(Account account) {
+        char group = account.getName().toLowerCase().charAt(0);     // Get group where this account would exist
+        for (Account a : dataStorage.getAccounts(group)) {
+            if (a.getId().equals(account.getId())) return true;
+        }
+        return false;
+    }
+
+    public boolean accountExists(String accountName) {
+        char group = accountName.toLowerCase().charAt(0);       // Get group where this account would exist
+        for (Account a : dataStorage.getAccounts(group)) {
+            if (a.getId().equals(Account.nameToId(accountName))) return true;
+        }
+        return false;
     }
 }
