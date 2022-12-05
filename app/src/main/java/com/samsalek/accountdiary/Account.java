@@ -25,7 +25,7 @@ public class Account implements Serializable {
     /**
      * A list of bitmap values for each image associated with the account.
      */
-    private final List<Bitmap> imageBitmaps = new ArrayList<>();
+    private final List<SerializableBitmap> imageBitmaps = new ArrayList<>();
 
     public Account(String name) {
         this.name = name;
@@ -37,7 +37,7 @@ public class Account implements Serializable {
     }
 
     public void addImageBitmap(Bitmap imageBitmap) {
-        imageBitmaps.add(imageBitmap);
+        imageBitmaps.add(new SerializableBitmap(imageBitmap));
     }
 
     public String getId() {
@@ -48,7 +48,7 @@ public class Account implements Serializable {
         return name;
     }
 
-    public List<Bitmap> getImageBitmaps() {
+    public List<SerializableBitmap> getImageBitmaps() {
         return Collections.unmodifiableList(imageBitmaps);
     }
 }

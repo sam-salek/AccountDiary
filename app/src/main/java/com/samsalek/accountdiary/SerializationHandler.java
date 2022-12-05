@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class SerializationHandler {
 
@@ -11,9 +12,18 @@ public class SerializationHandler {
 
     public static boolean saveData(FileOutputStream fileOutputStream) {
         try {
+
             fileOutputStream.write(accountDiary.dataToBytes());
             fileOutputStream.close();
             return true;
+
+            /*
+            ObjectOutputStream oos = new ObjectOutputStream(fileOutputStream);
+            oos.writeObject(accountDiary.getDataStorage());
+            oos.close();
+            fileOutputStream.close();
+            return true;
+            */
         } catch (Exception e) {
             e.printStackTrace();
         }

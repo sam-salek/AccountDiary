@@ -42,7 +42,6 @@ public class AccountDiary {
     }
 
     public byte[] dataToBytes() {
-
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(dataStorage);

@@ -33,7 +33,7 @@ public class ImageViewActivity extends AppCompatActivity {
 
         if (account.getImageBitmaps().size() != 0) {
             ImageView accountImagesView = findViewById(R.id.accountImagesView);
-            accountImagesView.setImageBitmap(account.getImageBitmaps().get(0));
+            accountImagesView.setImageBitmap(account.getImageBitmaps().get(0).getBitmap());
         }
 
         initBackClickListener();
