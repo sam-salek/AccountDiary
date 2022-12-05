@@ -1,4 +1,4 @@
-package com.samsalek.accountdiary;
+package com.samsalek.accountdiary.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -13,6 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.samsalek.accountdiary.Account;
+import com.samsalek.accountdiary.AccountDiary;
+import com.samsalek.accountdiary.R;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -50,6 +55,12 @@ public class AccountViewActivity extends AppCompatActivity {
             // Get account name from EditText input
             EditText accountNameEditText = findViewById(R.id.accountNameEditText);
             String accountName = accountNameEditText.getText().toString();
+
+            // Don't allow duplicate accounts
+            if (accountDiary.accountExists(accountName)) {
+                Toast.makeText(getBaseContext(), "Account already exists! Try another name.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // Create new account
             Account newAccount = new Account(accountName);
